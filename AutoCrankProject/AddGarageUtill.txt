@@ -1,0 +1,54 @@
+package com.AddGarageUser;
+
+import java.util.ArrayList;
+
+import com.ExcelUtileNaveen.Xls_Reader;
+
+public class AddGarageUserUtil {
+
+public static Xls_Reader reader;
+
+
+    public static ArrayList<Object[]> getDataFromExcel(){
+    	ArrayList<Object[]> myData = new ArrayList<Object[]>();
+    	try {
+    		reader =new Xls_Reader("C:\\Users\\user\\Desktop\\AutoCran.xlsx");
+    	}catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    	int rowCount = reader.getRowCount("AddGarageUserData");
+    	System.out.println(rowCount);
+    	for (int rowNum=2;rowNum <= rowCount;  rowNum++) 
+    	{
+    		String LoginUserName = reader.getCellData("AddGarageUserData", "LoginUserName", rowNum);
+    		System.out.println(LoginUserName);
+    		
+    		String LoginPassword = reader.getCellData("AddGarageUserData", "LoginPassword", rowNum);
+    		System.out.println(LoginPassword);
+    			
+    		String BrandName = reader.getCellData("AddGarageUserData", "BrandName", rowNum);
+    		System.out.println(BrandName);	
+    		    
+    		String FirstName = reader.getCellData("AddGarageUserData", "FirstName", rowNum);
+    		System.out.println(FirstName);	
+    		    
+    		String LastName = reader.getCellData("AddGarageUserData", "LastName", rowNum);
+    		System.out.println(LastName);	
+    		    
+    		String EmailAddress = reader.getCellData("AddGarageUserData", "EmailAddress", rowNum);
+    		System.out.println(EmailAddress);	
+    		    
+    		String Password = reader.getCellData("AddGarageUserData", "Password", rowNum);
+    		System.out.println(Password);
+    	   
+    		  	   
+    		
+    		Object ob[] = {LoginUserName,LoginPassword,BrandName,FirstName,LastName,EmailAddress,Password};
+    	    myData.add(ob);
+    	    
+    	    }  
+		return myData;
+		
+    	}
+    }
+

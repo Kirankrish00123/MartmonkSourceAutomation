@@ -1,0 +1,289 @@
+package com.ProductEdit;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.fail;
+
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoAlertPresentException;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+public class ProductEditCode {
+
+	private WebDriver driver;
+	private String baseUrl;
+	private boolean acceptNextAlert = true;
+	private StringBuffer verificationErrors = new StringBuffer();
+
+	@BeforeTest
+	public void setUpTest() {
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.manage().deleteAllCookies();
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+	}
+
+	@DataProvider
+	public Iterator<Object[]> getTestData() {
+		ArrayList<Object[]> testData = DataUtilProduct.getDataFromExcel();
+		return testData.iterator();
+
+	}
+
+	@Test(dataProvider = "getTestData")
+	public void AutoCrankUser(String LoginUserName, String LoginPassword, String ProductTitle, String EditProductHandle,
+			String CkeDescription, String ShortDescriptionHeading, String ShortDescription, String ProductType,
+			String ProductBrand, String Vendor, String Tags, String MRP, String DiscountedPrice, String SKUNumber,
+			String Barcode, String Inventory, String Weightingms, String HSNCode, String TaxSlab, String Size,
+			String Color, String MaterialType, String Price, String SKU, String Product_Lead_Time, String Delivered_in,
+			String Shipment_Type, String LengthIncentimeters, String BreadthIncentimeters, String HeightIncentimeters,
+			String ShippingCost, String Totalquantitythatcanbeservedperday) throws InterruptedException, AWTException {
+		Robot robot = new Robot();
+		driver.get("https://autocrank.martmonk.com/");
+		driver.findElement(By.xpath("//*[@id=\'userName\']")).sendKeys(LoginUserName);
+		driver.findElement(By.xpath("//*[@id=\'password\']")).sendKeys(LoginPassword);
+		driver.findElement(By.xpath("//*[@id=\'signInButton\']")).submit();
+		Thread.sleep(3000);
+		driver.findElement(By.xpath("/html/body/div/aside/section/ul/li[4]/a")).click();
+		Thread.sleep(3000);
+		driver.findElement(By.xpath("/html/body/div/aside/section/ul/li[4]/ul/li[1]/a")).click();
+		driver.findElement(By.xpath("//*[@id=\'11004\']")).click();
+
+		String parent = driver.getWindowHandle();	
+
+		System.out.println(parent);
+
+		Set<String> allWindows = driver.getWindowHandles();
+
+		for (String child : allWindows) {
+			if (!parent.equalsIgnoreCase(child)) {
+
+				driver.switchTo().window(child);
+
+			}
+		}
+
+		driver.findElement(By.id("title")).sendKeys(ProductTitle);
+		driver.findElement(By.id("handle")).sendKeys(EditProductHandle);
+
+		String Win = driver.getWindowHandle();
+
+		WebElement iframe = driver.findElement(By.tagName("iframe"));
+		driver.switchTo().frame(iframe);
+		WebElement ckeeditor = driver.findElement(By.tagName("body"));
+		ckeeditor.clear();
+		ckeeditor.sendKeys(CkeDescription);
+
+		driver.switchTo().window(Win);
+
+		driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/div/div[1]/form/div[1]/div[1]/div[4]/input")).sendKeys(ShortDescriptionHeading);
+		driver.findElement(By.xpath("/html/body/div/div[1]/div[2]/div/div[1]/form/div[1]/div[1]/div[5]/input")).sendKeys(ShortDescription);
+		driver.findElement(By.xpath("//*[@id=\'productEditForm1\']/div[1]/div[2]/div/div[1]/div[2]/div/button")).click();
+		driver.findElement(By.xpath("//*[@id=\'productEditForm1\']/div[1]/div[2]/div/div[1]/div[2]/div/div/ul/li[2]/a"))
+				.click();
+		 driver.get("https://autocrank.martmonk.com/website/ProductManagement/productEdit/10507");
+		    driver.findElement(By.xpath("//form[@id='productEditForm1']/div/div[2]/div/div[2]/div[2]/div/button/span")).click();
+		    driver.findElement(By.linkText("Aeroklas")).click();
+		    new Select(driver.findElement(By.id("product_brand"))).selectByVisibleText("Aeroklas");
+		    driver.findElement(By.xpath("(//button[@type='button'])[3]")).click();
+		    driver.findElement(By.xpath("//form[@id='productEditForm1']/div/div[2]/div/div[3]/div[2]/div/div/ul/li[7]/a/span")).click();
+		    new Select(driver.findElement(By.id("vendor"))).selectByVisibleText("Outdoor Travel gear");
+
+		driver.findElement(By.id("tagId")).sendKeys(Tags);
+
+	// FirstImage
+		driver.findElement(By.xpath("//*[@id='productEditForm1']/div[1]/div[3]/div[1]/div/div[1]/div/div/ul/li/div"))
+				.click();
+		Thread.sleep(2000);
+		StringSelection select = new StringSelection("C:\\Users\\user\\Downloads\\c20.jpg");
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(select, null);
+
+		robot.setAutoDelay(1000);
+
+		robot.keyPress(KeyEvent.VK_CONTROL);
+		robot.keyPress(KeyEvent.VK_V);
+
+		robot.keyRelease(KeyEvent.VK_CONTROL);
+		robot.keyRelease(KeyEvent.VK_V);
+
+		robot.setAutoDelay(1000);
+
+		robot.keyPress(KeyEvent.VK_ENTER);
+		robot.keyRelease(KeyEvent.VK_ENTER);
+
+		// Second Image
+		driver.findElement(By.xpath("//*[@id=\'productForm1\']/div[1]/div[4]/div/div/div[2]/div/div/ul/li/div"))
+				.click();
+		Thread.sleep(2000);
+		StringSelection selectTwo = new StringSelection("C:\\Users\\user\\Downloads\\M5.jpg");
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selectTwo, null);
+
+		robot.setAutoDelay(1000);
+
+		robot.keyPress(KeyEvent.VK_CONTROL);
+		robot.keyPress(KeyEvent.VK_V);
+
+		robot.keyRelease(KeyEvent.VK_CONTROL);
+		robot.keyRelease(KeyEvent.VK_V);
+
+		robot.setAutoDelay(1000);
+
+		robot.keyPress(KeyEvent.VK_ENTER);
+		robot.keyRelease(KeyEvent.VK_ENTER);
+
+		driver.findElement(By.id("check-image")).click();
+		robot.setAutoDelay(2000);
+
+		Alert alert = driver.switchTo().alert();
+		alert.accept();
+		
+		
+		   driver.findElement(By.xpath("//*[@id=\'original-price\']")).click();
+		    driver.findElement(By.id("original-price")).clear();
+		    driver.findElement(By.id("original-price")).sendKeys("12333");
+		    driver.findElement(By.id("price")).click();
+		    driver.findElement(By.id("price")).clear();
+		    driver.findElement(By.id("price")).sendKeys("567");
+		    driver.findElement(By.id("sku")).click();
+		    driver.findElement(By.id("sku")).click();
+		    // ERROR: Caught exception [ERROR: Unsupported command [doubleClick | id=sku | ]]
+		    driver.findElement(By.id("sku")).clear();
+		    driver.findElement(By.id("sku")).sendKeys("dvbsdkjvsd");
+		    driver.findElement(By.id("barcode")).click();
+		    driver.findElement(By.id("barcode")).clear();
+		    driver.findElement(By.id("barcode")).sendKeys("dvmcndsvhm");
+		    driver.findElement(By.id("inventoryPolicyDropdown")).click();
+		    new Select(driver.findElement(By.id("inventoryPolicyDropdown"))).selectByVisibleText("I will prepare this product against an order.");
+		    driver.findElement(By.id("inventoryPolicyDropdown")).click();
+		    driver.findElement(By.id("weight")).click();
+		    driver.findElement(By.id("weight")).clear();
+		    driver.findElement(By.id("weight")).sendKeys("333");
+		    driver.findElement(By.id("hsn")).click();
+		    driver.findElement(By.id("hsn")).clear();
+		    driver.findElement(By.id("hsn")).sendKeys("fwehfhvhdk");
+		    driver.findElement(By.id("tax_slab")).click();
+		    driver.findElement(By.id("tax_slab")).clear();
+		    driver.findElement(By.id("tax_slab")).sendKeys("ldvshncds");
+		    driver.findElement(By.xpath("(//input[@type='text'])[18]")).click();
+		    driver.findElement(By.xpath("(//input[@type='text'])[18]")).clear();
+		    driver.findElement(By.xpath("(//input[@type='text'])[18]")).sendKeys("21");
+		    driver.findElement(By.id("productEditForm1")).click();
+		    driver.findElement(By.name("price[]")).click();
+		    driver.findElement(By.name("price[]")).clear();
+		    driver.findElement(By.name("price[]")).sendKeys("2332");
+		    driver.findElement(By.name("sku[]")).click();
+		    driver.findElement(By.name("sku[]")).clear();
+		    driver.findElement(By.name("sku[]")).sendKeys("vsdjhcs");
+		    driver.findElement(By.id("submit1")).click();
+		driver.findElement(By.xpath(
+				"/html/body/div/div[1]/div[2]/div[1]/div[1]/form/div[1]/div[9]/div[2]/table/tbody/tr/td[3]/input"))
+				.click();
+		driver.findElement(By.xpath(
+				"/html/body/div/div[1]/div[2]/div[1]/div[1]/form/div[1]/div[9]/div[2]/table/tbody/tr/td[3]/input"))
+				.sendKeys(Price);
+		driver.findElement(By.xpath(
+				"/html/body/div/div[1]/div[2]/div[1]/div[1]/form/div[1]/div[9]/div[2]/table/tbody/tr/td[4]/input"))
+				.click();
+		driver.findElement(By.xpath(
+				"/html/body/div/div[1]/div[2]/div[1]/div[1]/form/div[1]/div[9]/div[2]/table/tbody/tr/td[4]/input"))
+				.sendKeys(SKU);
+		driver.findElement(By.id("submit1")).click();
+		driver.findElement(By.id("shippedByDropDown")).click();
+		new Select(driver.findElement(By.id("shippedByDropDown"))).selectByVisibleText("3 days");
+		driver.findElement(By.id("shippedByDropDown")).click();
+		driver.findElement(By.name("delivered_by")).click();
+		new Select(driver.findElement(By.name("delivered_by"))).selectByVisibleText("6 days");
+		driver.findElement(By.name("delivered_by")).click();
+		driver.findElement(By.id("length")).click();
+		driver.findElement(By.id("length")).clear();
+		driver.findElement(By.id("length")).sendKeys(LengthIncentimeters);
+		driver.findElement(By.id("breadth")).click();
+		driver.findElement(By.id("breadth")).clear();
+		driver.findElement(By.id("breadth")).sendKeys(BreadthIncentimeters);
+		driver.findElement(By.id("height")).click();
+		driver.findElement(By.id("height")).clear();
+		driver.findElement(By.id("height")).sendKeys(HeightIncentimeters);
+		driver.findElement(By.id("shipping_cost")).click();
+		driver.findElement(By.id("shipping_cost")).clear();
+		driver.findElement(By.id("shipping_cost")).sendKeys(ShippingCost);
+		driver.findElement(By.xpath("//*[@id='quantity_threshold\']")).clear();
+		driver.findElement(By.xpath("//*[@id='quantity_threshold\']")).click();
+		driver.findElement(By.xpath("//*[@id='quantity_threshold\']")).sendKeys(Totalquantitythatcanbeservedperday);
+
+		driver.findElement(By.id("productSubmit")).click();
+		Thread.sleep(18000);
+		Alert alerttwo = driver.switchTo().alert();
+		alerttwo.accept();
+
+		Thread.sleep(10000);
+
+		Alert alertthree = driver.switchTo().alert();
+		alertthree.accept();
+		Thread.sleep(5000);
+
+	}
+
+	@AfterClass(alwaysRun = true)
+	public void tearDown() throws Exception {
+		Thread.sleep(3000);
+		
+		String verificationErrorString = verificationErrors.toString();
+		if (!"".equals(verificationErrorString)) {
+			fail(verificationErrorString);
+		}
+	}
+
+	private boolean isElementPresent(By by) {
+		try {
+			driver.findElement(by);
+			return true;
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+	}
+
+	private boolean isAlertPresent() {
+		try {
+			driver.switchTo().alert();
+			return true;
+		} catch (NoAlertPresentException e) {
+			return false;
+		}
+	}
+
+	private String closeAlertAndGetItsText() {
+		try {
+			Alert alert = driver.switchTo().alert();
+			String alertText = alert.getText();
+			if (acceptNextAlert) {
+				alert.accept();
+			} else {
+				alert.dismiss();
+			}
+			return alertText;
+		} finally {
+			acceptNextAlert = true;
+		}
+	}
+}

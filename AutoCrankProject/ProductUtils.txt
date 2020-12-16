@@ -1,0 +1,131 @@
+package com.ProductEdit;
+
+import java.util.ArrayList;
+
+import com.ExcelUtileNaveen.Xls_Reader;
+
+public class DataUtilProduct {
+
+public static Xls_Reader reader;
+
+
+    public static ArrayList<Object[]> getDataFromExcel(){
+    	ArrayList<Object[]> myData = new ArrayList<Object[]>();
+    	try {
+    		reader =new Xls_Reader("C:\\Users\\user\\Desktop\\AutoCran.xlsx");
+    	}catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    	int rowCount = reader.getRowCount("ProductEditCode");
+    	System.out.println(rowCount);
+    	for (int rowNum=2;rowNum <= rowCount;  rowNum++) 
+    	{
+    		String LoginUserName = reader.getCellData("ProductEditCode", "LoginUserName", rowNum);
+    		System.out.println(LoginUserName);
+    		
+    		String LoginPassword = reader.getCellData("ProductEditCode", "LoginPassword", rowNum);
+    		System.out.println(LoginPassword);
+    			
+    		String ProductTitle = reader.getCellData("ProductEditCode", "ProductTitle", rowNum);
+    		System.out.println(ProductTitle);	
+    		    
+    		String EditProductHandle = reader.getCellData("ProductEditCode", "EditProductHandle", rowNum);
+    		System.out.println(EditProductHandle);	
+    		    
+    		String CkeDescription = reader.getCellData("ProductEditCode", "CkeDescription", rowNum);
+    		System.out.println(CkeDescription);	
+    		    
+    		String ShortDescriptionHeading = reader.getCellData("ProductEditCode", "ShortDescriptionHeading", rowNum);
+    		System.out.println(ShortDescriptionHeading);	
+    		
+    		String ShortDescription = reader.getCellData("ProductEditCode", "ShortDescription", rowNum);
+    		System.out.println(ShortDescription);
+    		    
+    		String ProductType = reader.getCellData("ProductEditCode", "ProductType", rowNum);
+    		System.out.println(ProductType);
+    		
+    		String ProductBrand = reader.getCellData("ProductEditCode", "ProductBrand", rowNum);
+    		System.out.println(ProductBrand);
+    		
+    		String Vendor = reader.getCellData("ProductEditCode", "Vendor", rowNum);
+    		System.out.println(Vendor);
+    		
+    	   
+    		String Tags = reader.getCellData("ProductEditCode", "Tags", rowNum);
+    		System.out.println(Tags);
+    		
+    		String MRP = reader.getCellData("ProductEditCode", "MRP", rowNum);
+    		System.out.println(MRP);
+    		
+    		String DiscountedPrice = reader.getCellData("ProductEditCode", "DiscountedPrice", rowNum);
+    		System.out.println(DiscountedPrice);
+    	    
+    		String SKUNumber = reader.getCellData("ProductEditCode", "SKUNumber", rowNum);
+    		System.out.println(SKUNumber);	
+    		    
+    		String Barcode = reader.getCellData("ProductEditCode", "Barcode", rowNum);
+    		System.out.println(Barcode);	
+    		    
+    		String Inventory = reader.getCellData("ProductEditCode", "Inventory", rowNum);
+    		System.out.println(Inventory);
+    		
+    		String Weightingms = reader.getCellData("ProductEditCode", "Weightingms", rowNum);
+    	    System.out.println(Weightingms);
+    	    
+    	    String HSNCode = reader.getCellData("ProductEditCode", "HSNCode", rowNum);
+    	    System.out.println(HSNCode);
+    	    
+    	    String TaxSlab = reader.getCellData("ProductEditCode", "TaxSlab", rowNum);
+    		System.out.println(TaxSlab);	
+    		    
+    		String Size = reader.getCellData("ProductEditCode", "Size", rowNum);
+    		System.out.println(Size);	
+    		    
+    		
+    		String Color = reader.getCellData("ProductEditCode", "Color", rowNum);
+    		System.out.println(Color);	
+    		    
+    		String MaterialType = reader.getCellData("ProductEditCode", "MaterialType", rowNum);
+    		System.out.println(MaterialType);
+    		
+    		String Price = reader.getCellData("ProductEditCode", "Price", rowNum);
+    		System.out.println(Price);
+    		
+    		String SKU = reader.getCellData("ProductEditCode", "SKU", rowNum);
+    		System.out.println(SKU);
+    		
+    		String Product_Lead_Time = reader.getCellData("ProductEditCode", "Product_Lead_Time", rowNum);
+    		System.out.println(Product_Lead_Time);
+    		
+    		String Delivered_in = reader.getCellData("ProductEditCode", "Delivered_in", rowNum);
+    		System.out.println(Delivered_in);
+    		
+    		String Shipment_Type = reader.getCellData("ProductEditCode", "Shipment_Type", rowNum);
+    		System.out.println(Shipment_Type);
+    	     
+    		String LengthIncentimeters = reader.getCellData("ProductEditCode", "LengthIncentimeters", rowNum);
+    		System.out.println(LengthIncentimeters);
+    		
+    		String BreadthIncentimeters = reader.getCellData("ProductEditCode", "BreadthIncentimeters", rowNum);
+    		System.out.println(BreadthIncentimeters);
+    			
+    		String HeightIncentimeters = reader.getCellData("ProductEditCode", "HeightIncentimeters", rowNum);
+    		System.out.println(HeightIncentimeters);	
+    		
+    		String ShippingCost = reader.getCellData("ProductEditCode", "ShippingCost", rowNum);
+     	    System.out.println(ShippingCost);
+    		    
+    		String Totalquantitythatcanbeservedperday = reader.getCellData("ProductEditCode", "Totalquantitythatcanbeservedperday", rowNum);
+    		System.out.println(Totalquantitythatcanbeservedperday);	    	   
+    		
+    		Object ob[] = {LoginUserName,LoginPassword,ProductTitle,EditProductHandle,CkeDescription,ShortDescriptionHeading,
+    				ShortDescription,ProductType,ProductBrand,Vendor,Tags,MRP,DiscountedPrice,SKUNumber,Barcode,Inventory,Weightingms,HSNCode,TaxSlab,
+    				Size,Color,MaterialType,Price,SKU,Product_Lead_Time,Delivered_in,Shipment_Type,LengthIncentimeters,BreadthIncentimeters,HeightIncentimeters,ShippingCost,Totalquantitythatcanbeservedperday};
+    	    myData.add(ob);
+    	    
+    	    }  
+		return myData;
+		
+    	}
+    }
+

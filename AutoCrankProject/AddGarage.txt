@@ -1,0 +1,118 @@
+package com.Bulkupload;
+
+import static org.testng.Assert.fail;
+
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoAlertPresentException;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+public class BulkUpload {
+	private WebDriver driver;
+	private String baseUrl;
+	private boolean acceptNextAlert = true;
+	private StringBuffer verificationErrors = new StringBuffer();
+
+	@BeforeClass(alwaysRun = true)
+	public void setUp() throws Exception {
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.manage().deleteAllCookies();
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+	}
+
+	@DataProvider
+	public Iterator<Object[]> getTestData() {
+		ArrayList<Object[]> testData = BulkUploadDataUtil.getDataFromExcel();
+		return testData.iterator();
+	}
+
+	@Test(dataProvider = "getTestData")
+	public void testDscdwevds(String LoginUserName, String LoginPassword, String SelectSeller, String Location)
+			throws Exception {
+		Robot robot = new Robot();
+		try 
+        {
+		driver.get("https://autocrank.martmonk.com/");
+		driver.findElement(By.xpath("//*[@id=\'userName\']")).sendKeys(LoginUserName);
+		driver.findElement(By.xpath("//*[@id=\'password\']")).sendKeys(LoginPassword);
+		driver.findElement(By.xpath("//*[@id=\'signInButton\']")).submit();
+		Thread.sleep(3000);
+		driver.findElement(By.xpath("//li[4]/a/span")).click();
+		driver.findElement(By.linkText("Product Bulk Upload")).click(); 
+	    driver.findElement(By.xpath("//*[@id=\'productBulkUploadForm\']/div/div[1]/div/button")).click();
+	    driver.findElement(By.xpath("//*[@id=\'productBulkUploadForm\']/div/div[1]/div/div/div/input")).sendKeys(SelectSeller);
+	    robot.keyPress(KeyEvent.VK_ENTER);
+		robot.keyRelease(KeyEvent.VK_ENTER);
+		Thread.sleep(2000);
+		WebElement upload=driver.findElement(By.id("product_upload_file"));
+		upload.sendKeys(Location);
+		driver.findElement(By.xpath("//*[@id=\'productBulkSubmit\']")).click();
+		
+
+		} 
+        catch (Exception e) 
+        {
+                e.printStackTrace();
+        }
+	}
+
+	@AfterClass(alwaysRun = true)
+	public void tearDown() throws Exception {
+
+		String verificationErrorString = verificationErrors.toString();
+		if (!"".equals(verificationErrorString)) {
+			fail(verificationErrorString);
+		}
+	}
+
+	private boolean isElementPresent(By by) {
+		try {
+			driver.findElement(by);
+			return true;
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+	}
+
+	private boolean isAlertPresent() {
+		try {
+			driver.switchTo().alert();
+			return true;
+		} catch (NoAlertPresentException e) {
+			return false;
+		}
+	}
+
+	private String closeAlertAndGetItsText() {
+		try {
+			Alert alert = driver.switchTo().alert();
+			String alertText = alert.getText();
+			if (acceptNextAlert) {
+				alert.accept();
+			} else {
+				alert.dismiss();
+			}
+			return alertText;
+		} finally {
+			acceptNextAlert = true;
+		}
+	}
+}

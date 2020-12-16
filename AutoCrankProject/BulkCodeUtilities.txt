@@ -1,0 +1,44 @@
+package com.Bulkupload;
+
+import java.util.ArrayList;
+
+import com.ExcelUtileNaveen.Xls_Reader;
+
+public class BulkUploadDataUtil {
+
+public static Xls_Reader reader;
+
+
+    public static ArrayList<Object[]> getDataFromExcel(){
+    	ArrayList<Object[]> myData = new ArrayList<Object[]>();
+    	try {
+    		reader =new Xls_Reader("C:\\Users\\user\\Desktop\\AutoCran.xlsx");
+    	}catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    	int rowCount = reader.getRowCount("BulkUpload");
+    	System.out.println(rowCount);
+    	for (int rowNum=2;rowNum <= rowCount;  rowNum++) 
+    	{
+    		String LoginUserName = reader.getCellData("BulkUpload", "LoginUserName", rowNum);
+    		System.out.println(LoginUserName);
+    		
+    		String LoginPassword = reader.getCellData("BulkUpload", "LoginPassword", rowNum);
+    		System.out.println(LoginPassword);
+    			
+    		String SelectSeller = reader.getCellData("BulkUpload", "SelectSeller", rowNum);
+    		System.out.println(SelectSeller);	
+    		
+    		String Location = reader.getCellData("BulkUpload", "Location", rowNum);
+    		System.out.println(Location);
+    		    
+    		
+    	    
+    	    Object ob[] = {LoginUserName,LoginPassword,SelectSeller,Location};
+    	    myData.add(ob);
+    	    
+    	    }
+		return myData;
+    	}
+    }
+
